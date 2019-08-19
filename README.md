@@ -51,9 +51,9 @@
 
 除了应用 starter，以下 starter 可用于添加[生产就绪](https://docs.spring.io/spring-boot/docs/2.0.0.RELEASE/reference/htmlsingle/#production-ready)特性：
 
->1
->>2
-**T1**
-*T2*
-***T3***
-~~T4~~
+>1  
+>>2 
+**T1**  
+*T2*  
+***T3***  
+~~T4~~  
