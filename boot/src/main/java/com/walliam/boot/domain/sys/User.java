@@ -1,18 +1,22 @@
 package com.walliam.boot.domain.sys;
 
 import com.walliam.common.BaseEntity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
-import javax.validation.constraints.Min;
 
 @Data
 @Builder
+@ApiModel(value="User",description = "用户对象实体")
 public class User extends BaseEntity {
 
+    @ApiModelProperty(name = "id",value="id",required = true,dataType = "Long")
     private Long id;
     @NonNull
+    @ApiModelProperty(name="orgCode",value="网点名称")
     private String orgCode;             //     网点代码
     private String jobNo;               //     工号
     private String username;            //     用户名
