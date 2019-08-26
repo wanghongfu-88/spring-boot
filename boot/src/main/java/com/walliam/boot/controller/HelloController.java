@@ -1,9 +1,11 @@
 package com.walliam.boot.controller;
 
 import com.walliam.boot.domain.sys.User;
+import com.walliam.boot.service.IUserService;
 import com.walliam.common.web.HttpResult;
 import io.swagger.annotations.*;
-import lombok.extern.log4j.Log4j2;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
@@ -14,8 +16,11 @@ import java.util.List;
 
 @Api(tags={"测试"})
 @Controller
-@Log4j2
+@Slf4j
 public class HelloController {
+
+    @Autowired
+    private IUserService iUserService;
 
     @ResponseBody
     @RequestMapping(value="hello/{id}",method = RequestMethod.POST)
@@ -27,7 +32,9 @@ public class HelloController {
             @ApiResponse(code=1000,message = "请求成功",response=User.class)
     })
     public HttpResult hello(@PathVariable(value = "id") String id, HttpServletRequest request){
-        User user =  User.builder().jobNo("01585524").email("10524@qq.com").jGPhone("18629054603").orgCode("105628").build();
+        //TODO 使用lombak 构造模式
+        User user =  iUserService.getUserOne(1000L);
+
         log.info("-------info-------------------");
         log.error("error----");
         log.debug("debug---------");

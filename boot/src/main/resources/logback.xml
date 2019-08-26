@@ -1,127 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration>
-    <!-- 格式化输出：%date表示日期，%thread表示线程名，%-5level：级别从左显示5个字符宽度 %msg：日志消息，%n是换行符-->
-    <!-- %logger{36} 表示 Logger 名字最长36个字符 -->
-    <property name="LOG_PATTERN" value="%d{HH:mm:ss.SSS} %-5level %logger{36} [%line] - %msg%n" />
 
-    <!-- 定义日志存储的路径，不要配置相对路径 -->
-    <property name="FILE_PATH" value="D:/logs" />
-    <property name="PROJECT_NAME" value="boot" />
-    <property name="LOG_LEVEL" value="INFO" />
+<!--设置log4j2的自身log级别为warn-->
+<!--日志级别以及优先级排序: OFF > FATAL > ERROR > WARN > INFO > DEBUG > TRACE > ALL -->
+<!--Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，
+    当设置成trace时，你会看到log4j2内部各种详细输出-->
+<!--monitorInterval：Log4j能够自动检测修改配置 文件和重新配置本身，设置间隔秒数-->
 
-    <!-- 打印到控制台 -->
-    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>${LOG_LEVEL}</level>
-        </filter>
-        <encoder>
-            <pattern>
-                %date %-5level [%-40thread] [%-30file:%-7line] %msg%n
-            </pattern>
-        </encoder>
-    </appender>
+<configuration status="warn" monitorInterval="30">
 
-    <!-- 不同級別的文件記錄在不同的日誌文件中 -->
-    <appender name="FILEINFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <Encoding>UTF-8</Encoding>
-        <file>${FILE_PATH}/${PROJECT_NAME}/${PROJECT_NAME}-info.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${FILE_PATH}/${PROJECT_NAME}/${PROJECT_NAME}-info.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
-            <MaxHistory>3</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%date [%thread] %-5level %logger{50} - %msg%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-  <!--  &lt;!&ndash; 数据同步 &ndash;&gt;
-    <appender name="SYNC_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <Encoding>UTF-8</Encoding>
-        <file>${FILE_PATH}/${PROJECT_NAME}/sync.log</file>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>INFO</level>
-        </filter>
-
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>
-                ${FILE_PATH}/${PROJECT_NAME}/sync.%d{yyyy-MM-dd}.log.zip
-            </fileNamePattern>
-            <maxHistory>3</maxHistory>
-        </rollingPolicy>
-
-        <encoder> <pattern>{"time": "%date", %msg}%n</pattern>
-        </encoder>
-    </appender>-->
-
-    <appender name="FILEERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <Encoding>UTF-8</Encoding>
-        <file>${FILE_PATH}/${PROJECT_NAME}/${PROJECT_NAME}-error.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${FILE_PATH}/${PROJECT_NAME}/${PROJECT_NAME}-error.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
-            <MaxHistory>3</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%date [%thread] %-5level %logger{50} - %msg%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>ERROR</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-    <appender name="FILEDEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <Encoding>UTF-8</Encoding>
-        <file>${FILE_PATH}/${PROJECT_NAME}/${PROJECT_NAME}-debug.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>${FILE_PATH}/${PROJECT_NAME}/${PROJECT_NAME}-debug.%d{yyyy-MM-dd}.log.zip</FileNamePattern>
-            <MaxHistory>3</MaxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%date [%thread] %-5level %logger{50} - %msg%n</pattern>
-        </encoder>
-        <filter class="ch.qos.logback.classic.filter.LevelFilter">
-            <level>DEBUG</level>
-            <onMatch>ACCEPT</onMatch>
-            <onMismatch>DENY</onMismatch>
-        </filter>
-    </appender>
-
-
-    <!--每天生成一个日志文件，保存15天的日志文件。rollingFile是用来切分文件的 -->
-   <!-- <appender name="FILE"
-              class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${FILE_PATH}</fileNamePattern>
-            &lt;!&ndash; keep 15 days' worth of history &ndash;&gt;
-            <maxHistory>15</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                &lt;!&ndash; 日志文件的最大大小 &ndash;&gt;
-                <maxFileSize>60MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-        </rollingPolicy>
-        <encoder>
-            <pattern>${LOG_PATTERN}</pattern>
-        </encoder>
-    </appender>-->
-    <!-- 级别从小到达：ERROR、WARN、INFO、DEBUG -->
-    <!--用户指定包下 打印等级大于等于INFO级别-->
-    <logger name="org.springframework" level="ERROR"/>
-    <logger name="org.apache.activemq" level="INFO" />
-    <logger name="ch.qos.logback" level="ERROR"/>
-    <logger name="com.wallian" level="${LOG_LEVEL}"/>
-
-
-    <!-- 其它包下的打印超过 WARN级别的 -->
-    <root level="${LOG_LEVEL}">
-        <appender-ref ref="Console"/>
-        <appender-ref ref="FILEINFO"/>
-        <appender-ref ref="FILEERROR"/>
-        <appender-ref ref="FILEDEBUG"/>
-    </root>
+    <property name="log.path" value="D:/logs"/>
+    <!--先定义所有的appender-->
+    <appenders>
+        <!--这个输出控制台的配置-->
+        <console name="Console" target="SYSTEM_OUT">
+            <!--输出日志的格式-->
+            <PatternLayout pattern="%date %-5level [%-40thread] [%-30file:%-7line] %msg%n"/>
+        </console>
+        <!--文件会打印出所有信息，这个log每次运行程序会自动清空，由append属性决定，这个也挺有用的，适合临时测试用-->
+        <File name="log" fileName="${log.path}/test.log" append="false">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} %-5level %class{36} %L %M - %msg%xEx%n"/>
+        </File>
+        <!-- 这个会打印出所有的info及以下级别的信息，每次大小超过size，
+        则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档-->
+        <RollingFile name="RollingFileInfo" fileName="${log.path}/logs/info.log"
+                     filePattern="${log.path}/logs/$${date:yyyy-MM}/info-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+                <ThresholdFilter level="INFO" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="WARN" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+        <RollingFile name="RollingFileWarn" fileName="${log.path}/logs/warn.log"
+                     filePattern="${log.path}/logs/$${date:yyyy-MM}/warn-%d{yyyy-MM-dd}-%i.log">
+            <Filters>
+                <ThresholdFilter level="WARN" onMatch="ACCEPT" onMismatch="DENY"/>
+                <ThresholdFilter level="ERROR" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </Filters>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <!-- DefaultRolloverStrategy属性如不设置，则默认为最多同一文件夹下7个文件，这里设置了20 -->
+            <DefaultRolloverStrategy max="20"/>
+        </RollingFile>
+        <RollingFile name="RollingFileError" fileName="${log.path}/logs/error.log"
+                     filePattern="${log.path}/logs/$${date:yyyy-MM}/error-%d{yyyy-MM-dd}-%i.log">
+            <ThresholdFilter level="ERROR"/>
+            <PatternLayout pattern="[%d{HH:mm:ss:SSS}] [%p] - %l - %m%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+    <!--然后定义logger，只有定义了logger并引入的appender，appender才会生效-->
+    <loggers>
+        <!--过滤掉spring和hibernate的一些无用的debug信息-->
+        <logger name="org.springframework" level="INFO"></logger>
+        <logger name="org.mybatis" level="INFO"></logger>
+        <root level="all">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFileInfo"/>
+            <appender-ref ref="RollingFileWarn"/>
+            <appender-ref ref="RollingFileError"/>
+        </root>
+    </loggers>
 </configuration>
