@@ -1,0 +1,16 @@
+                                                    **********************************
+                                                    *           springBoot 总结       *
+                                                    ==================================
+第一、拦截器
+    1、自定义截器类 实现 HandlerInterceptor重写方法（MyInterceptor）
+    2、编写拦截器配置文件主类 WebMvcConfigurer
+       * 此类必须继承  WebMvcConfigurerAdapter 类，并重写其中的方法(重写增加自定义拦截器的注册，某一个拦截器需要先注册进来，才能工作)
+       * addInterceptors（将自定义的拦截器注册到拦截器注册服务里面） 并且在主类上加上注解（WebMvcConfigurer）
+第二、定时任务
+     1、启动类加入@EnableSchedule
+     1、由于定时任务都是单线程在跑，效率低，所以需要设置为多线程
+     * 有两种方式，
+     *  第一种在 1、启动类开始异步模式，加入注解：@EnableAsync   2、定时方法前加入注解@Async
+     *  第二种、注册定时任务配置 通过实现SchedulingConfigurer接口，重写configureTasks方法，重新定义线程池（ScheduleConfig）
+第三、 内嵌Tomcat自定义配置用法
+      springBoot内嵌tomcat,优化性能可以根据配置以及TomcatServletWebServerFactory等设置
